@@ -24,15 +24,7 @@ class CommentController extends Controller
      */
     public function create()
     {
-        // Comment::create([
-        //     'author' => 'Lido',
-        //     'body' => 'First Comment to write here',
-        //     'post_id' => 201
-        // ]);
-
-        Comment::factory(50)->create();
-
-        return redirect(route('comments.index'));
+        return view('comments.create', ['pageTitle' => 'Create Comment Page']);
     }
 
     /**
@@ -40,13 +32,13 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // @TODO: In the forms section
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Comment $id)
+    public function show(string $id)
     {
         $comment = Comment::findOrFail($id);
 
@@ -56,24 +48,25 @@ class CommentController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Comment $comment)
+    public function edit(string $id)
     {
-        //
+        // @TODO: In the forms section
+        return view('comments.edit', ['pageTitle' => 'Edit Comment Page']);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Comment $comment)
+    public function update(Request $request, string $id)
     {
-        //
+        // @TODO: In the forms section
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Comment $comment)
+    public function destroy(string $id)
     {
-        //
+        // @TODO: In the forms section
     }
 }

@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class IndexController extends Controller
+class ContactController extends Controller
 {
     /**
      * Handle the incoming request.
      */
     public function __invoke(Request $request)
     {
-        return view('jobs.index');
+        return view('jobs.contact', ['pageTitle' => 'Contact']);
     }
 }

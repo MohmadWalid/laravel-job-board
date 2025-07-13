@@ -7,7 +7,10 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    function index()
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
     {
         // Get all posts from the Database
         $posts = Post::cursorPaginate(5);
@@ -16,24 +19,55 @@ class PostController extends Controller
         return view('posts.index', ['posts' => $posts, 'pageTitle' => 'Blog']);
     }
 
-    function create()
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
     {
-        // Post::create([
-        //     'title' => 'Test',
-        //     'author' => 'Lido',
-        //     'body' => 'Awesome',
-        //     'published' => true
-        // ]);
-
-        Post::factory(100)->create();
-
-        return redirect(route('blogs.index'));
+        // @TODO: In the forms section
+        return view('posts.create', ['pageTitle' => 'Blog - Create Post Page']);
     }
 
-    function show($id)
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        // @TODO: In the forms section
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
     {
         $post = Post::findOrFail($id);
 
         return view('posts.show', ['post' => $post, 'pageTitle' => $post->title]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        // @TODO: In the forms section
+        return view('posts.edit', ['pageTitle' => 'Blog - Edit Post Page']);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        // @TODO: In the forms section
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        // @TODO: In the forms section
     }
 }
