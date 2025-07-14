@@ -16,7 +16,7 @@ Route::get('/contact', ContactController::class)->name('contact'); // Single Act
 
 Route::resource('blog', PostController::class);
 
-Route::resource('comments', CommentController::class);
+Route::post('/blog/{post}/comments', [CommentController::class, 'store'])->name('comments.store');
 
 Route::resource('tags', TagController::class);
 

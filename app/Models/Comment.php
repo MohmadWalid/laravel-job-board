@@ -9,7 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 class Comment extends Model
 {
     use HasFactory, HasUuids;
-    protected $fillable = ["body", "author", "post_id"];
+    protected $fillable = ["body", "author"];
+    protected $guarded = ['post_id'];
 
     public function post()
     {

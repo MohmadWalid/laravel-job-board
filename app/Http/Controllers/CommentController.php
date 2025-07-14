@@ -2,47 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BlogCommentRequest;
 use App\Models\Comment;
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        // Get all comment from the Database
-        $comments = Comment::all();
-
-        // renderring all the comment in the view
-        return view('comments.index', ['comments' => $comments, 'pageTitle' => 'Blog']);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('comments.create', ['pageTitle' => 'Create Comment Page']);
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(BlogCommentRequest $request, Post $post)
     {
-        // @TODO: In the forms section
-    }
+        $post->comments()->create($request->validated());
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        $comment = Comment::findOrFail($id);
 
-        return view('comments.show', ['comment' => $comment, 'pageTitle' => $comment->title]);
+        return redirect()->route('blog.show', $post)->with('success', 'Comment created.');
     }
 
     /**

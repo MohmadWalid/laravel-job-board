@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BlogPostRequest;
+use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
@@ -13,7 +15,7 @@ class PostController extends Controller
     public function index()
     {
         // Get all posts from the Database
-        $posts = Post::cursorPaginate(5);
+        $posts = Post::latest()->cursorPaginate(5);
 
         // renderring all the posts in the view
         return view('posts.index', ['posts' => $posts, 'pageTitle' => 'Blog']);
@@ -24,16 +26,24 @@ class PostController extends Controller
      */
     public function create()
     {
-        // @TODO: In the forms section
         return view('posts.create', ['pageTitle' => 'Blog - Create Post Page']);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(BlogPostRequest $request)
     {
-        // @TODO: In the forms section
+        $post = new Post();
+
+        $post->title = $request->input('title');
+        $post->body = $request->input('body');
+        $post->author = $request->input('author');
+        $post->published = $request->has('published');
+
+        $post->save();
+
+        return redirect(route('blog.index'))->with('success', 'Post created Successfully.');
     }
 
     /**
@@ -41,7 +51,7 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
-        $post = Post::findOrFail($id);
+        $post = Post::withCount('comments')->with('comments')->findOrFail($id);
 
         return view('posts.show', ['post' => $post, 'pageTitle' => $post->title]);
     }
@@ -51,16 +61,25 @@ class PostController extends Controller
      */
     public function edit(string $id)
     {
-        // @TODO: In the forms section
-        return view('posts.edit', ['pageTitle' => 'Blog - Edit Post Page']);
+        $post = Post::findOrFail($id);
+        return view('posts.edit', ['post' => $post, 'pageTitle' => 'Blog - Edit Post Page: ' . $post->title]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(BlogPostRequest $request, string $id)
     {
-        // @TODO: In the forms section
+        $post = Post::findOrFail($id);
+
+        $post->title = $request->input('title');
+        $post->body = $request->input('body');
+        $post->author = $request->input('author');
+        $post->published = $request->has('published');
+
+        $post->save();
+
+        return redirect(route('blog.index'))->with('success', 'The Post has been Updated Successfully.');
     }
 
     /**
@@ -68,6 +87,8 @@ class PostController extends Controller
      */
     public function destroy(string $id)
     {
-        // @TODO: In the forms section
+        $post = Post::findOrFail($id);
+        $post->delete();
+        return redirect(route('blog.index'))->with('success', 'The Post has been Deleted Successfully.');
     }
 }

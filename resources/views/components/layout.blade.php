@@ -23,6 +23,7 @@
                                 <x-nav-link :href="route('about')" :active="request()->routeIs('about')">About</x-nav-link>
                                 <x-nav-link :href="route('contact')" :active="request()->routeIs('contact')">Contact
                                     Us</x-nav-link>
+                                <x-nav-link :href="route('blog.index')" :active="request()->routeIs('blog.index')">Blog</x-nav-link>
                             </div>
                         </div>
                     </div>
