@@ -15,7 +15,7 @@ class PostController extends Controller
     public function index()
     {
         // Get all posts from the Database
-        $posts = Post::latest()->cursorPaginate(5);
+        $posts = Post::withCount('comments')->latest()->cursorPaginate(10);
 
         // renderring all the posts in the view
         return view('posts.index', ['posts' => $posts, 'pageTitle' => 'Blog']);
@@ -51,7 +51,11 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
-        $post = Post::withCount('comments')->with('comments')->findOrFail($id);
+        $post = Post::withCount('comments')
+            ->with(['comments' => function ($query) {
+                $query->orderBy('created_at', 'desc');
+            }])
+            ->findOrFail($id);
 
         return view('posts.show', ['post' => $post, 'pageTitle' => $post->title]);
     }
